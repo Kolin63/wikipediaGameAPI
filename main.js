@@ -64,6 +64,9 @@ app.get("/links/:page", async (req, res) => {
                 const hrefRegex = /href="([^"]*)"/;
                 const hrefMatch = hrefRegex.exec(matches[i]);
                 if (hrefMatch && hrefMatch[1]) {
+                    if (hrefMatch[1].startsWith("/wiki/")) {
+                        hrefMatch[1] = "https://en.wikipedia.org" + hrefMatch[1];
+                    }
                     articleLinks.push(hrefMatch[1]);
                 }
             }
