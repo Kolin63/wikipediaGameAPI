@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WGAPI Client</title>
+</head>
+<body>
+    <button id="get-test">Get Test</button>
+</body>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("get-test").click();
+})
+
+document.getElementById("get-test").addEventListener("click", async function () {
+    await fetch("https://wgapi.kolin63.com/links/Bird")
+    .then(response => {
+        return response.text();
+    })
+    .then(response => {
+        return JSON.parse(response);
+    })
+    .then(json => {
+        console.log(json);
+    })
+})
+
+</script>
+</html>
