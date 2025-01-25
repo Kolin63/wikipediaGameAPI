@@ -27,13 +27,47 @@ app.get("/links/:page", async (req, res) => {
             matches.push(match[0]);
         }
 
-        for (let match in matches) {
-            
+        const articleLinks = [];
+        const incomps = [
+            "User:",
+            "Wikipedia:",
+            "File:",
+            "MediaWiki:",
+            "Template:",
+            "Help:",
+            "Category:",
+            "Portal:",
+            "Draft:",
+            "MOS:",
+            "TimedText:",
+            "Module:",
+            "Special:",
+            "Talk:",
+            "class=\"interlanguage-link-target\"",
+            "Main_Page",
+            "/wiki/" + page,
+            "wikimedia.org",
+            "wikidata.org"
+        ];
+        for (let i = 0; i < matches.length; i++) {
+            let status = true;
+            for (let j = 0; j < incomps.length; j++) {
+                if (matches[i].includes(incomps[j])) {
+                    status = false;
+                }
+            }
+            if (!matches[i].includes("/wiki/")) {
+                status = false;
+            }
+
+            if (status) {
+                articleLinks.push(matches[i]);
+            }
         }
 
-        // res.end(JSON.stringify(matches), null, 4);
+
+        res.end(JSON.stringify(articleLinks), null, 4);
         console.log(matches.length);
-        res.end(link);
     });
 });
 
