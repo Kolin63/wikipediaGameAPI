@@ -19,12 +19,12 @@ app.get("/links/:page", async (req, res) => {
         return response.text();
     })
     .then(html => {
-        const regex = /<a\b[^>]*href="([^"]*)"[^>]*>/g;
+        const regex = /<a\b[^>]*>(.*?)<\/a>/g;
         const matches = [];
         let match;
 
         while ((match = regex.exec(html)) !== null) {
-            matches.push(match[1]); // Capture the URL inside href
+            matches.push(match[0]);
         }
 
         const articleLinks = [];
@@ -61,9 +61,14 @@ app.get("/links/:page", async (req, res) => {
             }
 
             if (status) {
-                articleLinks.push(matches[i]);
+                const hrefRegex = /href="([^"]*)"/;
+                const hrefMatch = hrefRegex.exec(matches[i]);
+                if (hrefMatch && hrefMatch[1]) {
+                    articleLinks.push(hrefMatch[1]);
+                }
             }
         }
+
 
         res.end(JSON.stringify(articleLinks), null, 4);
         console.log(matches.length);
